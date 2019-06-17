@@ -36,6 +36,19 @@ anomalies["tg"].plot(x="longitude", col="month")
 #    Compare this overall mean anomaly to the anomaly of the pixel which contains Marburg. 
 #    Is the anomaly of Marburg lower or higher than the one for Europe? [2P] 
 
+anomeans=anomalies.mean()["tg"]
+coords = [8.77, 50.80]
+anomarburg = anomalies.sel(latitude = 50.80, longitude = 8.77, method = "nearest").mean()
 
+if anomarburg > anomeans:
+    print("Marburg's anomaly is higher.")
+else:
+    print("Marburg's anomaly is lower")
+
+        
 # 5. Write the monthly anomalies from task 3 to a netcdf file with name "europe_anom_2018.nc" to the solution directory.
 #    Write the monthly anomalies for Marburg to a csv file with name "marburg_anom_2018.csv" to the solution directory. [2P]
+
+anomalies.to_netcdf(output_dir / "europe_anom_2018.nc")
+anomarburg_tab = anomalies.sel(latitude = 50.80, longitude = 8.77, method = "nearest").to_dataframe()
+anomarburg_tab.to_csv(output_dir / "marburg_anom_2018.csv")
